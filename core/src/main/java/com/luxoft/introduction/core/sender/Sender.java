@@ -25,7 +25,7 @@ public class Sender {
     public Sender(String queueName) throws JMSException {
 
         // Create a ConnectionFactory
-        ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory("http://localhost");
+        ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory("tcp://localhost:61616");
 
         // Create a Connection
         Connection connection = connectionFactory.createConnection();
@@ -42,7 +42,7 @@ public class Sender {
         producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
 
         // Create a messages
-        String text = "Hello world! From: " + Thread.currentThread().getName() + " : " + this.hashCode();
+        String text = "Hello world!";
         TextMessage message = session.createTextMessage(text);
 
         // Tell the producer to send the message
@@ -52,7 +52,7 @@ public class Sender {
         // Clean up
         session.close();
         connection.close();
-
+        System.out.println("done...");
 
 //        MQConnectionFactory cf = new MQConnectionFactory();
 //        cf.setHostName(HOSTNAME);
@@ -92,7 +92,5 @@ public class Sender {
 
     public static void main(String[] args) throws JMSException {
         Sender sender = new Sender("myQueue");
-        for(int i = 0; i < 5; i++)
-            sender.sendMessage("test message #" + i);
     }
 }
